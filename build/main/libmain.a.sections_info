@@ -1,0 +1,100 @@
+In archive /home/carolina/esp/gatt_server/build/main/libmain.a:
+
+gatts_demo.o:     file format elf32-xtensa-le
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .literal.gatts_event_handler 00000014  00000000  00000000  00000034  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .literal.gap_event_handler 00000048  00000000  00000000  00000048  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  2 .literal.example_write_event_env 00000038  00000000  00000000  00000090  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  3 .literal.example_exec_write_event_env 00000018  00000000  00000000  000000c8  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  4 .literal.gatts_profile_b_event_handler 0000012c  00000000  00000000  000000e0  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  5 .literal.gatts_profile_a_event_handler 000001e8  00000000  00000000  0000020c  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  6 .literal.app_main 000000f0  00000000  00000000  000003f4  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  7 .text         00000000  00000000  00000000  000004e4  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  8 .data         00000000  00000000  00000000  000004e4  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          00000000  00000000  00000000  000004e4  2**0
+                  ALLOC
+ 10 .rodata.str1.4 00000bce  00000000  00000000  000004e4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+ 11 .text.gatts_event_handler 00000087  00000000  00000000  000010b4  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 12 .text.gap_event_handler 000000e3  00000000  00000000  0000113c  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 13 .rodata.gap_event_handler 00000054  00000000  00000000  00001220  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+ 14 .text.example_write_event_env 000000ff  00000000  00000000  00001274  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 15 .text.example_exec_write_event_env 00000048  00000000  00000000  00001374  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 16 .text.gatts_profile_b_event_handler 00000464  00000000  00000000  000013bc  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 17 .rodata.gatts_profile_b_event_handler 0000003c  00000000  00000000  00001820  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+ 18 .text.gatts_profile_a_event_handler 000006e4  00000000  00000000  0000185c  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 19 .rodata.gatts_profile_a_event_handler 00000040  00000000  00000000  00001f40  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+ 20 .rodata       0000001c  00000000  00000000  00001f80  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+ 21 .text.app_main 0000024e  00000000  00000000  00001f9c  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+ 22 .rodata.__func__$7024 00000009  00000000  00000000  000021ec  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+ 23 .bss.b_prepare_write_env 00000008  00000000  00000000  000021f8  2**2
+                  ALLOC
+ 24 .bss.a_prepare_write_env 00000008  00000000  00000000  000021f8  2**2
+                  ALLOC
+ 25 .data.gl_profile_tab 00000098  00000000  00000000  000021f8  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 26 .data.adv_params 00000020  00000000  00000000  00002290  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+ 27 .data.scan_rsp_data 0000002c  00000000  00000000  000022b0  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 28 .data.adv_data 0000002c  00000000  00000000  000022dc  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 29 .data.adv_service_uuid128 00000020  00000000  00000000  00002308  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+ 30 .bss.adv_config_done 00000001  00000000  00000000  00002328  2**0
+                  ALLOC
+ 31 .data.gatts_demo_char1_val 00000008  00000000  00000000  00002328  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 32 .bss.b_property 00000001  00000000  00000000  00002330  2**0
+                  ALLOC
+ 33 .bss.a_property 00000001  00000000  00000000  00002330  2**0
+                  ALLOC
+ 34 .data.char1_str 00000003  00000000  00000000  00002330  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+ 35 .debug_frame  000000b8  00000000  00000000  00002334  2**2
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 36 .debug_info   00003a42  00000000  00000000  000023ec  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 37 .debug_abbrev 00000359  00000000  00000000  00005e2e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 38 .debug_loc    00000551  00000000  00000000  00006187  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 39 .debug_aranges 00000050  00000000  00000000  000066d8  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 40 .debug_ranges 00000070  00000000  00000000  00006728  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 41 .debug_line   00000e07  00000000  00000000  00006798  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING
+ 42 .debug_str    00002d24  00000000  00000000  0000759f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 43 .comment      0000003b  00000000  00000000  0000a2c3  2**0
+                  CONTENTS, READONLY
+ 44 .xtensa.info  00000038  00000000  00000000  0000a2fe  2**0
+                  CONTENTS, READONLY
+ 45 .xt.lit       00000038  00000000  00000000  0000a336  2**0
+                  CONTENTS, RELOC, READONLY
+ 46 .xt.prop      0000081c  00000000  00000000  0000a36e  2**0
+                  CONTENTS, RELOC, READONLY
