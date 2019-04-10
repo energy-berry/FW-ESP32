@@ -97,21 +97,29 @@ ble.add_service(sTime)
 ble.start()
 ble.start_advertising()
 c.set_value(0)
+#cTime.set_value("")
 
 MyServo=servo.Servo(D5.PWM)
 MyServo.attach()
-
+TestIntensidad = 1000;
+hardTimestamp = 0;
+valueTime = "something"
 while True:
     print(".")
     # Let's update the BLE Characteristic Value
     value=c.get_value()
     valueTime=cTime.get_value()
-    print ("BLE input: ",value)
-    print ("BLE Time input: ",valueTime)
-    hardTimestamp = int(valueTime)
-    intensity= 7*value+1200
+    seperator = ''
+    valueTime=seperator.join(valueTime)
+    #valueTime=str(valueTime)
+    print ("BLE input: >", value, "<")
+    print ("BLE Time input: >", valueTime, "<")
+    if valueTime[0] != '\0':
+        hardTimestamp = int(valueTime)
+        
+    intensity= 8*value+1100
     MyServo.moveToPulseWidth(intensity)
-    print(MyServo.getCurrentPulseWidth())
+    print("Servo Current Pulse: ", MyServo.getCurrentPulseWidth())
     
     #Time Routines Module
     tm = rtc.get_utc()
@@ -122,5 +130,6 @@ while True:
     if(tm.tv_seconds >= hardTimestamp and tm.tv_seconds <= hardTimestamp + 2):
         print("Success on the interruption!")
         digitalWrite(2, HIGH)
+        TestIntensidad = 1900
     
     sleep(500)
