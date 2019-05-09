@@ -15,8 +15,75 @@ from wireless import ble
 from espressif.esp32ble import esp32ble as bledrv
 from espressif.esp32net import esp32wifi as wifi_driver
 
-pinMode(2,OUTPUT)
-streams.serial()
+devices = {
+    "1" : Device(1),
+    "2" : Device(2)
+}
+
+devices = [Device(1), Device(2)]
+
+class Device:
+
+    timestamp = -1
+    dimmerValue = 0
+    intensity = 0
+    
+    def __init__(self, idDev,isDimmable):
+        self.dimmable = isDimmable
+        self.id = idDev
+        if(isDimmable):
+            self.servo = servo.Servo(D5.PWM)
+            self.servo.attach()
+        else:
+            pinMode(id,OUTPUT)
+
+    def setDimmerInfo(self,dimVal, timeStmp):
+        self.dimmerValue = dimVal
+        self.timestamp = timeStmp
+        self.intensity = 8*dimVal+1100
+
+    def setIntensity(self):
+        if(isDimmable):
+            self.servo.moveToPulseWidth(intensity)
+        else:
+            digitalWrite(self.id, HIGH if self.dimmerValue == 100 else LOW)
+
+
+def initBLE():
+    bledrv.init()
+    # Set GAP name
+    ble.gap("Enegy Berry Module")
+    # Create a GATT Service
+    service = ble.Service(0x1805)
+    # Create a GATT Characteristic
+    characteristic = ble.Characteristic(0x2A2B,ble.NOTIFY | ble.READ | ble.WRITE,20,"Current Time",ble.STRING)
+    # Add the GATT Characteristic to the Service
+    service.add_characteristic(characteristic)
+    ble.add_service(service)
+    # Start the BLE stack
+    ble.start()
+    ble.start_advertising()
+    characteristic.set_value("")
+
+def BerryParser(inputParser):
+    #deviceId|dimmerValue|timestamp
+    isDimmer = True
+    splitRes = text.split("|")
+    if(splitRes[1] == "On"):
+        splitRes[1] = 100
+        isDimmer = False
+    if(splitRes[1] == "Off"):
+        splitRes[1] = 0
+        isDimmer = False
+    if(splitRes[2] == "Now"):
+        splitRes[2] = -1
+        
+    device = devices[splitRes[0]]
+    device.dimmable = isDimmer
+    device.setDimmerInfo(splitRes[1], splitRes[2])
+
+    return device
+
 
 def GetCurrentTime():
     wifi_driver.auto_init()
@@ -26,7 +93,7 @@ def GetCurrentTime():
     try:
         # FOR THIS EXAMPLE TO WORK, "Network-Name" AND "Wifi-Password" MUST BE SET
         # TO MATCH YOUR ACTUAL NETWORK CONFIGURATION
-        wifi.link("Tuneros3000",wifi.WIFI_WPA2,"qwerty123")
+        wifi.link("HWAV",wifi.WIFI_WPA2,"2019hwav")
     except Exception as e:
         print("ooops, something wrong while linking :(", e)
         return -1
@@ -52,14 +119,50 @@ def GetCurrentTime():
         print("ooops, something very wrong! :(",e)
         return -1
 
+
 timestamp = -1
 while(timestamp == -1):
     print("Trying to get timestamp")
     jsTimeRes = GetCurrentTime()
     timestamp = int(jsTimeRes["unixtime"])
-
-#    hardTimestamp = timestamp + 40
 rtc.set_utc(timestamp)
+#===================  BLE INIT
+initBLE()
+
+TestIntensidad = 1000;
+hardTimestamp = 0;
+valueTime = "something"
+
+while True:
+    print(".")
+    # Let's update the BLE Characteristic Value
+    bleRawData=characteristic.get_value()
+    seperator = ''
+    bleRawData=seperator.join(bleRawData)
+    print ("BLE Raw input: (", bleRawData, ")")
+    
+    device = BerryParser(bleRawData)
+    device.setIntensity()
+   
+    #valueTime=str(valueTime)
+    #print ("BLE Splited input: (", bleDataArray, ")")
+    #if valueTime[0] != '\0':
+    #    hardTimestamp = int(valueTime)
+    #    hardTimestamp = int(hardTimestamp/1000)
+    
+    
+    #Time Routines Module
+    espTime = rtc.get_utc()
+    #print("current_timestamp: ",.tv_seconds," hardData: ",hardTimestamp)
+    #print(espTime.tm_year,'/',espTime.tm_month,'/',espTime.tm_mday,sep='')
+    #print(espTime.tm_hour,':',espTime.tm_min,':',espTime.tm_sec,sep='')
+    
+    if(espTime.tv_seconds >= hardTimestamp and espTime.tv_seconds <= hardTimestamp + 2):
+        print("Success on the interruption!")
+        digitalWrite(2, HIGH)
+        TestIntensidad = 1900
+    
+    sleep(1)
 
 #print("Trying to instert hardData in a flash file")
 #flashFile = flash.FlashFileStream(0x00310000,512)
@@ -77,59 +180,3 @@ rtc.set_utc(timestamp)
 #flashFile.write(len(ds))
 #flashFile.write(jsonDs)
 #flashFile.flush()
-
-#BLE BLOCK INIT
-bledrv.init()
-# Set GAP name
-ble.gap("Berry dimmer")
-# Create a GATT Service: let's try a Battery Service (uuid is 0x180F)
-s = ble.Service(0x180F)
-sTime = ble.Service(0x1805)
-# Create a GATT Characteristic
-c = ble.Characteristic(0x2A58,ble.NOTIFY | ble.READ | ble.WRITE,1,"Battery Level",ble.NUMBER)
-cTime = ble.Characteristic(0x2A2B,ble.NOTIFY | ble.READ | ble.WRITE,20,"Current Time",ble.STRING)
-# Add the GATT Characteristic to the Service
-s.add_characteristic(c)
-sTime.add_characteristic(cTime)
-ble.add_service(s)
-ble.add_service(sTime)
-# Start the BLE stack
-ble.start()
-ble.start_advertising()
-c.set_value(0)
-#cTime.set_value("")
-
-MyServo=servo.Servo(D5.PWM)
-MyServo.attach()
-TestIntensidad = 1000;
-hardTimestamp = 0;
-valueTime = "something"
-while True:
-    print(".")
-    # Let's update the BLE Characteristic Value
-    value=c.get_value()
-    valueTime=cTime.get_value()
-    seperator = ''
-    valueTime=seperator.join(valueTime)
-    #valueTime=str(valueTime)
-    print ("BLE input: >", value, "<")
-    print ("BLE Time input: >", valueTime, "<")
-    if valueTime[0] != '\0':
-        hardTimestamp = int(valueTime)
-        
-    intensity= 8*value+1100
-    MyServo.moveToPulseWidth(intensity)
-    print("Servo Current Pulse: ", MyServo.getCurrentPulseWidth())
-    
-    #Time Routines Module
-    tm = rtc.get_utc()
-    print("current_timestamp: ",tm.tv_seconds," hardData: ",hardTimestamp)
-    print(tm.tm_year,'/',tm.tm_month,'/',tm.tm_mday,sep='')
-    print(tm.tm_hour,':',tm.tm_min,':',tm.tm_sec,sep='')
-    
-    if(tm.tv_seconds >= hardTimestamp and tm.tv_seconds <= hardTimestamp + 2):
-        print("Success on the interruption!")
-        digitalWrite(2, HIGH)
-        TestIntensidad = 1900
-    
-    sleep(500)
