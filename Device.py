@@ -2,8 +2,16 @@ from servo import servo
 import EnergySensor
 
 class Device:
-
-   
+    
+    taskList = []
+    ##EXAMPLE task item =========
+    #task = {
+    #        'Dimmvalue': "100" ,
+    #        'timestamp': "-1",
+    #    }
+        
+    #taskList.append(task)
+    ## ==========================
     
     def __init__(self, device_id, device_name, device_type,pin):
         
@@ -44,7 +52,20 @@ class Device:
         if self.device_type=='ONOFF':
             digitalWrite(self.device_pin,LOW)
             
-           
-
+    def add_task(self, dVal, time):
+        task = {
+            'Dimmvalue': dVal ,
+            'timestamp': time,
+        }
+        taskList.append(task)
+    
+    def execute_tasks(self, berryTime):
+        for task in taskList:
+            if(berryTime >= task["timestamp"] and berryTime <= task["timestamp"] + 2) or task["timestamp"] == 'Now'):
+                print("Executing task on Device: ", device_name)
+                if(task[1] == "On"):
+    #    devices[splitRes[0]].on()     
+    #elif(splitRes[1] == "Off"):
+    #    devices[splitRes[0]].off()
 
 
