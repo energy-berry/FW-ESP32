@@ -49,10 +49,10 @@ while True:
     bleInput=communication.BLE['Characteristics']['CurrentTime'].get_value()
     seperator = ''
     bleInput=seperator.join(bleInput)
-    print("(", bleInput, ")") #TEST PRINTt
+    print("(", bleInput, ")") #TEST PRINT
     
     # 2- SENDING INSTRUCTIONS TO THE DEVICES
-    if(bleInput != ""): #CHECKING FOR CHANGES = "" -> None
+    if(bleInput != ""): #CHECKING FOR CHANGES  "" -> None
         device = BerryParser(bleInput)
     
     # 3- POLING THE DEVICES FOR PENDING TASKS AND RUN THEM
