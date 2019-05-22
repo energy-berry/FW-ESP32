@@ -23,7 +23,7 @@ devices = []
 devices.append(Device.Device('0','Dimmer','DIMMABLE',D5.PWM))
 devices.append(Device. Device('1','Relev1','ONOFF',D2 ))
 devices.append(Device. Device('2','Relev2','ONOFF',D4 ))
-#devices.append(Device.Device('3','Energy','ENERGYMSMNT',A0))
+
 print("Devices Created Done")
 
 communication=BerryComm.BerryCommunication()
@@ -36,9 +36,21 @@ while(timestamp == -1):
 rtc.set_utc(timestamp)
 print("World timestamp Done")
 
+#### BERRY ENERGYMSMNT THREAD
+energy= EnergySensor.EnergySensor(A0,'H')
 
+"""
+def energyMeassure():
+    energy.start()
+    
+    
+thread(energyMeassure)"""
+
+#### BERRY'S MAIN LOOP
 while True:
     
+    e= energy.start()
+    print("Energy",e)
     print("STEP 0: CHECKING BLE")
     # 1- CHECKING FOR INCOMING STRUCTIONS FROM BLE
     print("STEP 1: CHECKING BLE")
@@ -67,4 +79,5 @@ while True:
         espTime = rtc.get_utc()
         dev.execute_tasks(espTime.tv_seconds)
     #print(".")
+
     sleep(500)

@@ -58,40 +58,42 @@ class EnergySensor:
     
     def start(self):
 
-        while (True):
-            IAvg=0
-            lastTimeCalculated=0
-            t = timers.timer()
-            t.start()
-            sampleCounter= self.samplesPerSecond
-            while(sampleCounter>0):
-                IValues = []
-                elapsed = t.get()
-                I=0
-                while(t.get()-elapsed<=40):
-                    sensorValue = adc.read(self.inputPin)  # Se obtiene la medicion del ADC
-                    voltage = sensorValue * (3.3 / 4095.0)*self.boardMCompensation+self.boardBCompensation  # Se convierte el valor a voltaje y se deja como valor positivo
-                    voltage=abs(voltage-self.sensorOffset)  # Se saca la diferencia respecto al valor de referencia del sensor
-                    IValues.append((voltage)/self.sensorSensibillity)  # Se convierte a corriente y se guarda en el arreglo temporal
-                    sleep(1)  # We meess with time.
-            
-                dt=t.get() - lastTimeCalculated
-                lastTimeCalculated=t.get()
-                for i in range(39):
+        #while (True):
+        IAvg=0
+        lastTimeCalculated=0
+        t = timers.timer()
+        t.start()
+        sampleCounter= self.samplesPerSecond
+        while(sampleCounter>0):
+            IValues = []
+            elapsed = t.get()
+            I=0
+            while(t.get()-elapsed<=40):
+                sensorValue = adc.read(self.inputPin)  # Se obtiene la medicion del ADC
+                voltage = sensorValue * (3.3 / 4095.0)*self.boardMCompensation+self.boardBCompensation  # Se convierte el valor a voltaje y se deja como valor positivo
+                voltage=abs(voltage-self.sensorOffset)  # Se saca la diferencia respecto al valor de referencia del sensor
+                IValues.append((voltage)/self.sensorSensibillity)  # Se convierte a corriente y se guarda en el arreglo temporal
+                sleep(1)  # We meess with time.
+        
+            print(len(IValues))
+            dt=t.get() - lastTimeCalculated
+            lastTimeCalculated=t.get()
+            for i in range(len(IValues)):
                     I=I + IValues.pop()
-                I=I/39
-                
-                #1.11058749  Factor AVG RMS
-                IAvg=IAvg+I/self.samplesPerSecond
-                IAvg=IAvg* 1.11058749
-                sleep(self.interSampleTime)
-                sampleCounter= sampleCounter-1 
-              
+            I=I/39
             
-            print("Time:",t.get()," I: ",IAvg," W: ", IAvg*115 )  #Debug
-            IAvg=0 #Se resetea la corriente de cada segundo
-            t.reset()    
-         
+            #1.11058749  Factor AVG RMS
+            IAvg=IAvg+I/self.samplesPerSecond
+            IAvg=IAvg* 1.11058749
+            sleep(self.interSampleTime)
+            sampleCounter= sampleCounter-1 
+          
+        
+        print("Time:",t.get()," I: ",IAvg," W: ", IAvg*115 )  #Debug
+        IAvg=0 #Se resetea la corriente de cada segundo
+        t.reset()    
+        return IAvg
+     
        
          
         

@@ -50,9 +50,7 @@ class Device:
         }
         self.taskList.append(task)
         
-    def meassure(self):
-        if self.device_type =='ENERGYMSMNT':
-            self.energy.start()
+    
         
     
     def execute_tasks(self, berryTime):
