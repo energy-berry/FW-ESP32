@@ -17,7 +17,7 @@ def load_key(key_file):
     return pkey
 
 def load_device_conf():
-    confstream = open('resource://device.conf.json')
+    confstream = open('resource://GCPdevice.conf.json')
     conf = ''
     while True:
         line = confstream.readline()

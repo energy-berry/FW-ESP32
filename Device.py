@@ -3,18 +3,9 @@ import EnergySensor
 
 class Device:
     
-    taskList = []
-    ##EXAMPLE task item =========
-    #task = {
-    #        'value': "100" ,
-    #        'timestamp': "-1",
-    #    }
-        
-    #taskList.append(task)
-    ## ==========================
-    
     def __init__(self, device_id, device_name, device_type,pin):
         
+        self.taskList = []
         self.device_id = device_id
         self.device_name= device_name
         self.device_type= device_type
@@ -33,7 +24,7 @@ class Device:
         if device_type =='ENERGYMSMNT':
             self.energy= EnergySensor.EnergySensor(pin,'H')
             ## Maybe here goes the start
-    
+        
            
         
     def set_intensity(self, intensity):
@@ -57,15 +48,35 @@ class Device:
             'value': val ,
             'timestamp': time,
         }
-        taskList.append(task)
+        self.taskList.append(task)
+        
+    def meassure(self):
+        if self.device_type =='ENERGYMSMNT':
+            self.energy.start()
+        
     
     def execute_tasks(self, berryTime):
-        for task in taskList:
-            if(berryTime >= task['timestamp'] and berryTime <= task['timestamp'] + 2) or task['timestamp'] == 'Now'):
-                print("Executing task on Device: ", device_name)
-                if(task['value'] == "On"):
-                    on()     
-                elif(task['value'] == "Off"):
-                    off()
-                else
-                    set_intensity(int(task['value']))
+        print("Device ", self.device_name ," Number of tasks: ",len(self.taskList))
+        counter = 0;
+        taskToRemove = []
+        
+        for task in self.taskList:
+            exeTask = False
+            if('NOW' in task['timestamp']):
+                exeTask = True
+                taskToRemove.append(counter)
+            elif(berryTime >= int(task['timestamp']) and berryTime <= int(task['timestamp']) + 2):
+                exeTask = True
+                taskToRemove.append(counter)
+            if exeTask:
+                print("Executing task on Device: ", self.device_name)
+                if task['value'] == 'ON':
+                    self.on()     
+                elif task['value'] == 'OFF':
+                    self.off()
+                else:
+                    self.set_intensity(int(task['value']))
+            counter= counter+1
+        
+        for idxToRemove in taskToRemove:
+            del self.taskList[idxToRemove]

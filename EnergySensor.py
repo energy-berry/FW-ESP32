@@ -55,8 +55,7 @@ class EnergySensor:
         
         
         
-        
-        
+    
     def start(self):
 
         while (True):

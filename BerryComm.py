@@ -1,5 +1,3 @@
-
-
 import streams
 import json
 import requests
@@ -83,28 +81,28 @@ def initBLE():
     
     
     return BLE 
-    
-    
 
 
 class BerryCommunication:
-    
-    
     #Initializing of the Comunication module
     def __init__(self):
     
         # Inits WIFI driver and connects to the wifi access point
         wifi_driver.auto_init()
         try:
-            wifi.link("HOME-2508",wifi.WIFI_WPA2,"415CF0870ADC04E2")
+            print("tratando de establecer la conexion WIFI...")
+            wifi.link("AXTEL-2765",wifi.WIFI_WPA2,"B4742765") #HOME-2508 / 415CF0870ADC04E2
+            print("WIFI conectado!")
         except Exception as e:
             print("No se pudo establecer la conexion WIFI: ",e)
             
             
         # Inits the gcp device
+        print("iniciando GCP...")
         self.GCP_device = init_GCP_device()
         
         # Inits the BLE service
+        print("iniciando servicio BLE...")
         self.BLE=initBLE()
         
     
@@ -128,12 +126,7 @@ class BerryCommunication:
             print("And the result is:",response.content)
             print("-------------")
             js = json.loads(response.content)
-            print("Time:",js["unixtime"])
-            return js  
+            return js["unixtime"]  
         except Exception as e:
             print("ooops, something very wrong! :(",e)
             return -1
-
-
-
-
